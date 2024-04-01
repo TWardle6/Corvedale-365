@@ -1,10 +1,16 @@
-"use client";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
+import { useState } from "react";
 
-import { CldUploadButton } from "next-cloudinary";
-import { CldImage } from "next-cloudinary";
-import { CldUploadWidget } from "next-cloudinary";
+export type UploadResult = {
+	info: {
+		public_id: string;
+	};
+	event: "success";
+};
 
 export default function Home() {
+	const [imageId, setImageId] = useState("cld-sample-2");
+
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
 			<CldUploadWidget signatureEndpoint="/api/sign-image">
@@ -12,13 +18,16 @@ export default function Home() {
 					return <button onClick={() => open()}>Upload an Image</button>;
 				}}
 			</CldUploadWidget>
-			<CldImage
-				width="960"
-				height="600"
-				src="cld-sample-2"
-				sizes="100vw"
-				alt="Description of my image"
-			/>
+
+			{imageId && (
+				<CldImage
+					src={imageId}
+					width={960}
+					height={600}
+					crop="scale"
+					alt="Description of my image"
+				/>
+			)}
 		</main>
 	);
 }
